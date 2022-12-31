@@ -1,5 +1,7 @@
 package Access;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Operation extends Thread {
     private Compte compte;
 
@@ -13,9 +15,16 @@ public class Operation extends Thread {
             int i = (int) (Math.random() * 10000);
             String nom = getName();
             System.out.print(nom);
-            //        compte.ajouter(i);
-            //        compte.retirer(i);
-            compte.operationNulle(i);
+
+            compte.verrou.lock();
+            try {
+                // Effectuer deux opérations qui devraient laisser le solde du compte à 0
+                compte.ajouter(i);
+                compte.retirer(i);
+            } finally {
+                compte.verrou.unlock();
+            }
+
             int solde = compte.getSolde();
             System.out.print(nom);
             if (solde != 0) {
@@ -33,5 +42,3 @@ public class Operation extends Thread {
         }
     }
 }
-
-

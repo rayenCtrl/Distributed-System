@@ -4,7 +4,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Compte {
     private int solde = 0;
-    private ReentrantLock verrou = new ReentrantLock();
+    public ReentrantLock verrou = new ReentrantLock();
 
     public void ajouter(int somme) {
         verrou.lock();
